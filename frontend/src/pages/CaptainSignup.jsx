@@ -11,7 +11,7 @@ const CaptainSignup = () => {
      const submitHandler = (e) => {
        e.preventDefault();
        setCaptainData({
-         name: {
+         fullName: {
            firstName: firstName,
            lastName: lastName,
          },
