@@ -28,6 +28,8 @@ const userSchema = new mongoose.Schema({
      password:{
           type:String,
           required:true,
+          //reason for slect false is to prevent password form  to not go to user 
+          //mean jub user ko find karoge to ye filed user ke pass nh jayegi
           select:false,
      },
      socketId:{
@@ -36,7 +38,16 @@ const userSchema = new mongoose.Schema({
 
 });
 userSchema.methods.generateAuthToken = function () {
-     const  token = jwt.sign({_id:this._id},process.env.JWT_SECRET,{expiresIn:'24h'});
+     const  token = jwt.sign(
+     {_id:this._id,
+          // firstname:this.fullname.firstname,
+          // lastname:this.fullname.lastname,
+          // email:this.email,
+          // socketId:this.socketId,
+
+     },
+     process.env.JWT_SECRET,
+     {expiresIn:'24h'});
      return token;
 }
 
