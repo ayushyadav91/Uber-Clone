@@ -1,48 +1,59 @@
-import React from 'react'
+import React,  { useState, useContext } from 'react'
 import { Link , useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { UserDataContext } from '../context/UserContext'
+import { UserDataContext } from '../context/UserContext';
+console.log(import.meta.env.VITE_BASE_URL)
+
 
 
 
 
 const UserSignUp = () => {
-     const [email, setEmail] = React.useState('')
-     const [password, setPassword] = React.useState('')
-     const [firstName, setFirstName] = React.useState('')
-     const [lastName, setLastName] = React.useState('')
-     const [userData, setUserData] = React.useState({})
+     const [email, setEmail] = useState('')
+     const [password, setPassword] = useState('')
+     const [firstName, setFirstName] = useState('')
+     const [lastName, setLastName] = useState('')
+     const [userData, setUserData] = useState({})
 
 const navigate = useNavigate()
 
 const {user, setUser } = React.useContext(UserDataContext)
 
-  const submitHandler = async (e) => {
-   e.preventDefault()
-     const newUser = {
-      fullname:{
-        firstname:firstName,
-        lastname:lastName
-   },
-   email: email,
-   password
-   }
-   const response = await axios.post("http://localhost:4000/users/register", newUser)
+const submitHandler = async (e) => {
+  e.preventDefault();
 
-   if(response.status === 200){
-    const data = response.data
-    setUser(data.user)
-    navigate('/home')
-   }
-    
-   setEmail('')
-   setPassowrd('')
-   setFirstname('')
-   setLastname('')
+  // Correct the structure to match the expected format from the backend
+  const newUser = {
+    fullname: {
+      firstname: firstName,  // Ensure this is the correct variable you're using
+      lastname: lastName     // Ensure this is the correct variable you're using
+    },
+    email: email,
+    password: password
+  };
 
-   }
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser);
+    if (response.status === 201) {
+      const data = response.data;
+      setUser(data.user);
+      localStorage.setItem('token', data.token);
+      navigate('/home');
+    }
+  } catch (error) {
+    if (error.response) {
+      console.error("Backend Error Response:", error.response.data);
+    } else {
+      console.error("Error Message:", error.message);
+    }
+  }
 
-
+  // Reset form fields after submission
+  setEmail('');
+  setPassword('');
+  setFirstName('');
+  setLastName('');
+};
 
 
   return (

@@ -77,6 +77,8 @@ captainSchema.methods.generateAuthToken = function(){
 
 };
 captainSchema.methods.comparePassword =  async function(password){
+     //console.log(this.password); refers to the passwrod filed in the user model
+     //console.log(password); refers to the password that is being passed in the login route
      return await bcrypt.compare(password,this.password);   
 };
 captainSchema.statics.hashPassword = async function(password){

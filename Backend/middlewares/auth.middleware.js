@@ -5,7 +5,7 @@ const captainModel = require('../models/captain.model');
 
 
 
-module.exports.authUser = async (req ,res, next)=>{
+module.exports.authUser = async (req ,res, next)=>{ 
 //take token from cookie or header 
      const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
      if(!token){
@@ -24,6 +24,7 @@ module.exports.authUser = async (req ,res, next)=>{
           const decoded = jwt.verify(token,process.env.JWT_SECRET);
           const user = await userModel.findById(decoded._id);
 
+          console.log(user);
      //then user find karne ke bad user se user data ko lekge request me set kur dege
           req.user = user;
           return next(); //ja raha hu set karne
@@ -44,6 +45,8 @@ module.exports.authCaptain = async (req ,res, next)=>{
      }
      try{
           const decoded = jwt.verify(token,process.env.JWT_SECRET);
+
+          console.log(decoded); 
           const captain = await captainModel.findById(decoded._id);
 
           req.captain = captain;

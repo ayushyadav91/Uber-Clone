@@ -31,6 +31,8 @@ if(isCaptainAlreadyExist){
 4. Return the response
 */
 const hashedPassword = await captainModel.hashPassword(password);  
+//user captain servise folder and createCaptain
+
 const captain = await captainService.createCaptain({
     firstname:fullname.firstname,
     lastname:fullname.lastname,
@@ -41,6 +43,7 @@ const captain = await captainService.createCaptain({
     capacity: vehicle.capacity,
     vehicleType: vehicle.vehicleType,
 });
+
 const token = captain.generateAuthToken();
 res.status(201).json({token,captain});
 }
@@ -73,6 +76,5 @@ module.exports.logoutCaptain = async (req,res,next)=>{
      await blacklistTokenModel.create({token});
 
      res.clearCookie('token');
-
      res.status(200).json({message:'Logout successful'});
 }
