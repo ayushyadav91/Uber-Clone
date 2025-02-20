@@ -19,6 +19,7 @@ connectToDB();
 //Build in middlewares
 app.use(cors({
   origin: '*',
+  
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 }));
 app.use(express.json({limit: '15kb'}));

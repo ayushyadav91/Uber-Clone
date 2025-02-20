@@ -230,6 +230,7 @@ Example:
 - `password`: A string with a minimum length of 6 characters.
 
 ### Response:
+- 
 
 
 

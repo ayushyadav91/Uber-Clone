@@ -13,7 +13,7 @@ const errors = validationResult(req);
 if(!errors.isEmpty()){
     return res.status(401).json({errors:errors.array()});
 }
-
+try{
 //When Everything is okay then we will get the data from the request
 const {fullname,email,password,vehicle} = req.body;
 
@@ -47,11 +47,16 @@ const captain = await captainService.createCaptain({
 const token = captain.generateAuthToken();
 res.status(201).json({token,captain});
 }
+catch(error){
+    res.status(400).json({errors:error.message});
+}
+}
 module.exports.loginCaptain = async (req,res,next)=>{
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(400).json({errors:errors.array()});
     }
+    try{
     const {email,password} = req.body;
     const captain = await captainModel.findOne({email}).select('+password');
 
@@ -66,15 +71,28 @@ module.exports.loginCaptain = async (req,res,next)=>{
     res.cookie('token',token);
     res.status(200).json({token,captain});
 }
+catch(error){
+    res.status(400).json({errors:error.message});
+}
+}
 
 module.exports.getCaptainProfile = async (req,res,next)=>{
+    try{
      res.status(200).json({captain:req.captain});
+    } catch(error){
+        res.status(400).json({errors:error.message});
+    }
 }
 
 module.exports.logoutCaptain = async (req,res,next)=>{
+     try{
      const token = req.cookies.token || req.headers.authorization.split(' ')[1];
      await blacklistTokenModel.create({token});
 
      res.clearCookie('token');
      res.status(200).json({message:'Logout successful'});
+     }
+     catch(error){
+          res.status(401).json({message:'Unauthorized'});
+     }
 }

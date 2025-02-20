@@ -10,6 +10,7 @@ module.exports.registerUser = async (req,res,next)=>{
      if(!errors.isEmpty()){
           return res.status(400).json({errors:errors.array()});
      }
+     try{
 //When Everything is okay then we will get the data from the request
      const {fullname,email,password} = req.body;
 
@@ -37,6 +38,10 @@ module.exports.registerUser = async (req,res,next)=>{
      //Now we will generate the auth token
      const token = user.generateAuthToken();
      res.status(201).json({token,user});
+          }
+          catch(error){
+               res.status(400).json({errors:error.message});
+          }
 
 }
 
@@ -45,8 +50,10 @@ module.exports.loginUser = async (req,res,next)=>{
      if(!errors.isEmpty()){
           return res.status(400).json({errors:errors.array()});
      }
-
+    try{
      const {email,password} = req.body;
+     console.log(email);
+     console.log(password);
      const user = await userModel.findOne({email}).select('+password');
  
      if(!user){
@@ -66,16 +73,28 @@ module.exports.loginUser = async (req,res,next)=>{
 
     res.cookie('token',token);
     res.status(200).json({token,user});
+   }catch(error){
+     res.status(400).json({errors:error.message});
+        }
 
 }
 
-module.exports.getUserProfile = async (req,res,next)=>{
+module.exports.getUserProfile = async (req,res)=>{
+     try{
      res.status(200).json(req.user);
+     }
+     catch(error){
+          res.status(400).json({errors:error.message});
+     }
 }
-
-module.exports.logoutUser = async (req,res,next)=>{
+module.exports.logoutUser = async (req,res)=>{
+     try{
      res.clearCookie('token');
      const token = req.cookies.token || req.headers.authorization.split(' ')[1];
      await blackListTokenModel.create({token});
      res.status(200).json({message:'Logged out'});
+     }
+     catch(error){
+          res.status(401).json({message:'Unauthorized'});
+     }
 }
