@@ -16,7 +16,7 @@ Uber Clone is a ride-booking web application that replicates the core features o
 ## 🛠️ Tech Stack
 | Frontend | Backend | Database | Other Tools |
 |----------|---------|----------|-------------|
-| React.js | Node.js | MongoDB | OAuth2 |
+| React.js | Node.js | MongoDB | JWT Token Authentication |
 | TailwindCSS | Express.js | Mongoose | Jest(Testing) |
 
 ## 🚀 Running the Project app Locally

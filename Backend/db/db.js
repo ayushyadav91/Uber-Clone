@@ -11,6 +11,9 @@ const mongoose = require('mongoose');
 //     console.error('Error connecting to MongoDB:', error);
 //   }
 // };
+
+
+
 function connectToDB() {
   mongoose.connect(process.env.MONGODB_URI, {
   }).then(()=>{

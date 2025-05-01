@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../app'); // Assuming your Express app is exported from app.js or similar
+const app = require('../app'); // your Express app is exported from app.js or similar
 const userModel = require('../models/user.model');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -120,3 +120,4 @@ describe('User Routes', () => {
 
 
 
+  
